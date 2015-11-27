@@ -18,17 +18,6 @@ public class SistemaFacturacionLibros {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-
-//        try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-////            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-////                if ("Nimbus".equals(info.getName())) {
-////                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-////                    break;
-////                }}
-//            } catch(Exception e){
-//            e.printStackTrace();
-//        }
         
         try {
             UIManager.setLookAndFeel("com.pagosoft.plaf.PgsLookAndFeel");
