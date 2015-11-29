@@ -5,10 +5,16 @@
  */
 package sistemafacturacionlibros;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
 /**
  *
  * @author Arielo
  */
+
 public class WindowLogin extends javax.swing.JFrame {
 
     /**
@@ -17,7 +23,9 @@ public class WindowLogin extends javax.swing.JFrame {
     public WindowLogin() {
         initComponents();
     }
-
+    public void CloseFrame(){
+        super.dispose();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,7 +116,24 @@ public class WindowLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
+        JFrame window = new JFrame("Look and feel");
+        window.setVisible(true);
+        window.setSize(500, 500);
+        window.setResizable(false);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        window.add(panel);
+
+        JButton button = new JButton("Look and feel");
+        panel.add(button);
+
+        JProgressBar pb = new JProgressBar();
+        pb.setValue(75);
+        panel.add(pb);
+        CloseFrame();
+// TODO add your handling code here:
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
