@@ -26,21 +26,33 @@ public class SistemaFacturacionLibros {
             //SwingUtilities.updateComponentTreeUI(yourFrame);
         } catch (Exception e) { /* Most of the time you're just going to ignore it */ }
 
-        JFrame window = new JFrame("Look and feel");
-        window.setVisible(true);
-        window.setSize(500, 500);
-        window.setResizable(false);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel panel = new JPanel();
-        window.add(panel);
-
-        JButton button = new JButton("Look and feel");
-        panel.add(button);
-
-        JProgressBar pb = new JProgressBar();
-        pb.setValue(75);
-        panel.add(pb);
+        JFrame windowLogin = new JFrame("Login");
+        windowLogin.setVisible(true);
+        windowLogin.setSize(500,500);
+        windowLogin.setResizable(false);
+        windowLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        
+        
+        
+        
+        
+        
+//        JFrame window = new JFrame("Look and feel");
+//        window.setVisible(true);
+//        window.setSize(500, 500);
+//        window.setResizable(false);
+//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//        JPanel panel = new JPanel();
+//        window.add(panel);
+//
+//        JButton button = new JButton("Look and feel");
+//        panel.add(button);
+//
+//        JProgressBar pb = new JProgressBar();
+//        pb.setValue(75);
+//        panel.add(pb);
 
     }
 

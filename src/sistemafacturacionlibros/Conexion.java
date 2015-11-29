@@ -79,7 +79,18 @@ public class Conexion {
                     + "Password TEXT, "
                     + "Nivel TEXT NOT NULL) ";
             stmt.executeUpdate(sql);
-
+            
+            //Tabla Clientes
+            //TODO
+            sql = "CREATE TABLE IF NOT EXISTS Clientes "
+                    + "(ID INTEGER PRIMARY KEY ,"
+                    + "Nombre Text, "
+                    + "Apellido TEXT, "
+                    + "Telefono INTEGER, "
+                    + "Direccion TEXT) ";
+            stmt.executeUpdate(sql);
+            
+            
             stmt.close();
             c.close();
 
