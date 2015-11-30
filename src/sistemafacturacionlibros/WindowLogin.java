@@ -84,7 +84,7 @@ public class WindowLogin extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(loginPasstxt)
                             .addComponent(loginUsertxt))
-                        .addGap(50, 50, 50)
+                        .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(loginPass, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
                             .addComponent(loginUser))
@@ -121,28 +121,17 @@ public class WindowLogin extends javax.swing.JFrame {
     private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
         //Login sencillo para usar hasta integrar login con base de datos
         //TODO
-        String username = "123";
-        String password = "123";
+        String username = "admin";
+        String password = "admin";
         SistemaFacturacionLibros sfc = new SistemaFacturacionLibros();
         if (username.equals(loginUser.getText()) || password.equals(loginPass.getText()))
         {
             LibroDetalle s = new LibroDetalle();
+            s.setTitle("Book details");
             s.setVisible(true);
-//        JFrame window = new JFrame("Look and feel");
-//        window.setVisible(true);
-//        window.setSize(500, 500);
-//        window.setResizable(false);
-//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        JPanel panel = new JPanel();
-//        window.add(panel);
-//
-//        JButton button = new JButton("Look and feel");
-//        panel.add(button);
-//
-//        JProgressBar pb = new JProgressBar();
-//        pb.setValue(75);
-//        panel.add(pb);
+            s.setSize(500,375);
+            s.setResizable(false);
+
         CloseFrame();
         }
         else{

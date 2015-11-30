@@ -28,6 +28,7 @@ public class SistemaFacturacionLibros {
 
         WindowLogin windowLogin = new WindowLogin();
         windowLogin.setVisible(true);
+        windowLogin.setTitle("Login Window");
         windowLogin.setSize(500,375);
         windowLogin.setResizable(false);
         windowLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

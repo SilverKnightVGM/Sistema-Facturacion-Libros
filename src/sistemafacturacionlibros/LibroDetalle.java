@@ -39,76 +39,80 @@ public class LibroDetalle extends javax.swing.JFrame {
         EdicionFill = new javax.swing.JLabel();
         EditoraFill = new javax.swing.JLabel();
         GeneroFill = new javax.swing.JLabel();
-        BtnVolver = new javax.swing.JButton();
-        BtnCarrito = new javax.swing.JButton();
+        Backbtn = new javax.swing.JLabel();
+        ShopCartBtn = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        TituloLibro.setFont(new java.awt.Font("Lucida Sans", 0, 11)); // NOI18N
+        TituloLibro.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
         TituloLibro.setText("Titulo");
 
-        AutorLibro.setFont(new java.awt.Font("Lucida Sans", 0, 11)); // NOI18N
+        AutorLibro.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
         AutorLibro.setText("Autor");
 
-        EditoraLibro.setFont(new java.awt.Font("Lucida Sans", 0, 11)); // NOI18N
+        EditoraLibro.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
         EditoraLibro.setText("Editora");
 
-        EdicionLibro.setFont(new java.awt.Font("Lucida Sans", 0, 11)); // NOI18N
+        EdicionLibro.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
         EdicionLibro.setText("Edicion");
 
-        GeneroLibro.setFont(new java.awt.Font("Lucida Sans", 0, 11)); // NOI18N
+        GeneroLibro.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
         GeneroLibro.setText("Genero");
 
-        IDLibro.setFont(new java.awt.Font("Lucida Sans", 0, 11)); // NOI18N
+        IDLibro.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
         IDLibro.setText("ID");
 
-        BtnVolver.setText("Volver");
-        BtnVolver.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnVolverActionPerformed(evt);
+        Backbtn.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\goback.png")); // NOI18N
+        Backbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BackbtnMouseClicked(evt);
             }
         });
 
-        BtnCarrito.setText("Agregar al Carrito");
+        ShopCartBtn.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\shopping_cart.png")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(IDLibro)
                             .addComponent(TituloLibro)
-                            .addComponent(EdicionLibro))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(GeneroLibro)
-                            .addGap(1, 1, 1)))
-                    .addComponent(AutorLibro)
-                    .addComponent(EditoraLibro))
+                            .addComponent(EditoraLibro)
+                            .addComponent(AutorLibro)))
+                    .addComponent(GeneroLibro)
+                    .addComponent(EdicionLibro, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(EdicionFill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(AutorFill, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(IDFill, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
-                                .addComponent(TituloFill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(EditoraFill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(GeneroFill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 27, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BtnVolver)
-                .addGap(91, 91, 91)
-                .addComponent(BtnCarrito)
-                .addGap(68, 68, 68))
+                            .addComponent(TituloFill, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(IDFill, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(GeneroFill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(EditoraFill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(EdicionFill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(AutorFill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Backbtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ShopCartBtn)
+                        .addGap(102, 102, 102))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,43 +121,45 @@ public class LibroDetalle extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(IDLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(IDFill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(TituloFill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TituloLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TituloLibro)
+                    .addComponent(TituloFill, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(AutorLibro)
                     .addComponent(AutorFill, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(EdicionLibro)
                     .addComponent(EdicionFill, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(EditoraLibro)
                     .addComponent(EditoraFill, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(GeneroLibro)
                     .addComponent(GeneroFill, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnVolver)
-                    .addComponent(BtnCarrito))
-                .addGap(44, 44, 44))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Backbtn)
+                    .addComponent(ShopCartBtn))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-        //Boton volver
-        //TODO
-    private void BtnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverActionPerformed
+
+    private void BackbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackbtnMouseClicked
         // TODO add your handling code here:
         WindowLogin s = new WindowLogin();
-        this.setVisible(false);
         s.setVisible(true);
-    }//GEN-LAST:event_BtnVolverActionPerformed
+        s.setTitle("Login Window");
+        s.setResizable(false);
+        s.setSize(500,375);
+        this.dispose();
+    }//GEN-LAST:event_BackbtnMouseClicked
 
     /**
      * @param args the command line arguments
@@ -193,8 +199,7 @@ public class LibroDetalle extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AutorFill;
     private javax.swing.JLabel AutorLibro;
-    private javax.swing.JButton BtnCarrito;
-    private javax.swing.JButton BtnVolver;
+    private javax.swing.JLabel Backbtn;
     private javax.swing.JLabel EdicionFill;
     private javax.swing.JLabel EdicionLibro;
     private javax.swing.JLabel EditoraFill;
@@ -203,6 +208,7 @@ public class LibroDetalle extends javax.swing.JFrame {
     private javax.swing.JLabel GeneroLibro;
     private javax.swing.JLabel IDFill;
     private javax.swing.JLabel IDLibro;
+    private javax.swing.JLabel ShopCartBtn;
     private javax.swing.JLabel TituloFill;
     private javax.swing.JLabel TituloLibro;
     // End of variables declaration//GEN-END:variables
