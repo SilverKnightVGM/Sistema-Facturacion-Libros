@@ -5,8 +5,10 @@
  */
 package sistemafacturacionlibros;
 
+import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
@@ -35,59 +37,59 @@ public class WindowLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        loginUsertxt = new javax.swing.JLabel();
+        loginPasstxt = new javax.swing.JLabel();
+        loginPass = new javax.swing.JPasswordField();
+        loginbtn = new javax.swing.JButton();
+        loginUser = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        imageBook = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
-        jLabel1.setText("Username");
+        loginUsertxt.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
+        loginUsertxt.setText("Username");
 
-        jLabel2.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
-        jLabel2.setText("Password");
+        loginPasstxt.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
+        loginPasstxt.setText("Password");
 
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\key.png")); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        loginbtn.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\key.png")); // NOI18N
+        loginbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                loginbtnActionPerformed(evt);
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        loginUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                loginUserActionPerformed(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Lucida Sans", 0, 18)); // NOI18N
         jLabel3.setText("Introduzca sus datos para identificarse");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\libreria.jpg")); // NOI18N
+        imageBook.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\libreria.jpg")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(imageBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(83, 83, 83)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(loginPasstxt)
+                            .addComponent(loginUsertxt))
                         .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
-                            .addComponent(jTextField1))
+                            .addComponent(loginPass, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                            .addComponent(loginUser))
                         .addGap(74, 74, 74)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(loginbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -99,47 +101,64 @@ public class WindowLogin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(loginUsertxt)
+                            .addComponent(loginUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(33, 33, 33))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(loginbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(9, 9, 9)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(loginPasstxt)
+                    .addComponent(loginPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addComponent(imageBook, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        JFrame window = new JFrame("Look and feel");
-        window.setVisible(true);
-        window.setSize(500, 500);
-        window.setResizable(false);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel panel = new JPanel();
-        window.add(panel);
-
-        JButton button = new JButton("Look and feel");
-        panel.add(button);
-
-        JProgressBar pb = new JProgressBar();
-        pb.setValue(75);
-        panel.add(pb);
+        //Cuando el boton sea presionado
+        //TODO
+    private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
+        //Login sencillo para usar hasta integrar login con base de datos
+        //TODO
+        String username = "123";
+        String password = "123";
+        SistemaFacturacionLibros sfc = new SistemaFacturacionLibros();
+        if (username.equals(loginUser.getText()) || password.equals(loginPass.getText()))
+        {
+            LibroDetalle s = new LibroDetalle();
+            s.setVisible(true);
+//        JFrame window = new JFrame("Look and feel");
+//        window.setVisible(true);
+//        window.setSize(500, 500);
+//        window.setResizable(false);
+//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//        JPanel panel = new JPanel();
+//        window.add(panel);
+//
+//        JButton button = new JButton("Look and feel");
+//        panel.add(button);
+//
+//        JProgressBar pb = new JProgressBar();
+//        pb.setValue(75);
+//        panel.add(pb);
         CloseFrame();
+        }
+        else{
+            
+            JOptionPane.showMessageDialog(null,"Los datos son erroneos", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        {
+           
+        }
 // TODO add your handling code here:
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_loginbtnActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void loginUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginUserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_loginUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,12 +196,12 @@ public class WindowLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel imageBook;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField loginPass;
+    private javax.swing.JLabel loginPasstxt;
+    private javax.swing.JTextField loginUser;
+    private javax.swing.JLabel loginUsertxt;
+    private javax.swing.JButton loginbtn;
     // End of variables declaration//GEN-END:variables
 }
