@@ -63,14 +63,14 @@ public class LibroDetalle extends javax.swing.JFrame {
         IDLibro.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
         IDLibro.setText("ID");
 
-        Backbtn.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\goback.png")); // NOI18N
+        Backbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistemafacturacionlibros/goback.png"))); // NOI18N
         Backbtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BackbtnMouseClicked(evt);
             }
         });
 
-        ShopCartBtn.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\shopping_cart.png")); // NOI18N
+        ShopCartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistemafacturacionlibros/shopping_cart.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,7 +145,7 @@ public class LibroDetalle extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Backbtn)
                     .addComponent(ShopCartBtn))
-                .addContainerGap())
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();

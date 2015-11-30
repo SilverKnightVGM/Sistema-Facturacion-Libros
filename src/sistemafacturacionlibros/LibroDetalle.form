@@ -113,7 +113,7 @@
                   <Component id="Backbtn" min="-2" max="-2" attributes="0"/>
                   <Component id="ShopCartBtn" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="29" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -182,7 +182,7 @@
     <Component class="javax.swing.JLabel" name="Backbtn">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\Arielo\Documents\NetBeansProjects\Sistema-Facturacion-Libros\goback.png"/>
+          <Image iconType="3" name="/sistemafacturacionlibros/goback.png"/>
         </Property>
       </Properties>
       <Events>
@@ -192,7 +192,7 @@
     <Component class="javax.swing.JLabel" name="ShopCartBtn">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\Arielo\Documents\NetBeansProjects\Sistema-Facturacion-Libros\shopping_cart.png"/>
+          <Image iconType="3" name="/sistemafacturacionlibros/shopping_cart.png"/>
         </Property>
       </Properties>
     </Component>
