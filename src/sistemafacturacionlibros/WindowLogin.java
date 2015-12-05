@@ -47,13 +47,13 @@ public class WindowLogin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        loginUsertxt.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
+        loginUsertxt.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         loginUsertxt.setText("Username");
 
-        loginPasstxt.setFont(new java.awt.Font("Lucida Sans", 1, 11)); // NOI18N
+        loginPasstxt.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         loginPasstxt.setText("Password");
 
-        loginbtn.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\key.png")); // NOI18N
+        loginbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/key.png"))); // NOI18N
         loginbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginbtnActionPerformed(evt);
@@ -66,10 +66,10 @@ public class WindowLogin extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Lucida Sans", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel3.setText("Introduzca sus datos para identificarse");
 
-        imageBook.setIcon(new javax.swing.ImageIcon("C:\\Users\\Arielo\\Documents\\NetBeansProjects\\Sistema-Facturacion-Libros\\libreria.jpg")); // NOI18N
+        imageBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/libreria.jpg"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,10 +77,9 @@ public class WindowLogin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(imageBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(loginPasstxt)
                             .addComponent(loginUsertxt))
@@ -89,15 +88,18 @@ public class WindowLogin extends javax.swing.JFrame {
                             .addComponent(loginPass, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
                             .addComponent(loginUser))
                         .addGap(74, 74, 74)
-                        .addComponent(loginbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(loginbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(jLabel3)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(36, 36, 36)
                 .addComponent(jLabel3)
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -126,11 +128,10 @@ public class WindowLogin extends javax.swing.JFrame {
         SistemaFacturacionLibros sfc = new SistemaFacturacionLibros();
         if (username.equals(loginUser.getText()) || password.equals(loginPass.getText()))
         {
-            LibroDetalle s = new LibroDetalle();
-            s.setTitle("Book details");
+            VentanaPrincipal s = new VentanaPrincipal();
+            s.setTitle("Main Window");
             s.setVisible(true);
-            s.setSize(500,375);
-            s.setResizable(false);
+            s.setResizable(true);
 
         CloseFrame();
         }
