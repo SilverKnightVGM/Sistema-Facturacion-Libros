@@ -5,17 +5,52 @@
  */
 package sistemafacturacionlibros;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Enzo
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form VentanaPrincipal
-     */
+//    Conexion miconexion;
+    Connection c = null;
+    Statement stmt = null;
+
+    static final String poolFull = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    static final String poolNums = "0123456789";
+    static final String poolChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ";
+    static Random ran = new Random();
+
     public VentanaPrincipal() {
+//        try {
+//            this.miconexion = new Conexion();
+////            for (int i = 0; i < 30; i++) {
+////                tempRandomData();
+////            }
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         initComponents();
+        rootPane.setDefaultButton(btn_searchBar);
+        RefreshTablaLibros();
+        RefreshTablaCarrito();
     }
 
     /**
@@ -52,11 +87,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btn_searchBar.setText("jButton1");
+        btn_searchBar.setText("Buscar");
+        btn_searchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchBarActionPerformed(evt);
+            }
+        });
 
         Buscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         Buscar.setText("Buscar:");
 
+        searchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBarActionPerformed(evt);
+            }
+        });
         searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 searchBarFocusGained(evt);
@@ -86,14 +131,25 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(btn_searchBar)))
         );
 
+        searchBar.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                table_books.clearSelection();
+                table_cart.clearSelection();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                //NOTHING
+            }
+        });
+
         jPanel_bottom.setPreferredSize(new java.awt.Dimension(970, 446));
 
         table_cart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Título", "Autor", "Precio", "Cantidad"
@@ -107,11 +163,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        table_cart.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(table_cart);
 
         jPanel_btnsCart.setLayout(new java.awt.GridBagLayout());
 
         btn_addToCart.setText("Agregar al carrito");
+        btn_addToCart.setMaximumSize(new java.awt.Dimension(125, 23));
+        btn_addToCart.setMinimumSize(new java.awt.Dimension(125, 23));
+        btn_addToCart.setPreferredSize(new java.awt.Dimension(125, 23));
         btn_addToCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_addToCartActionPerformed(evt);
@@ -120,23 +180,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel_btnsCart.add(btn_addToCart, new java.awt.GridBagConstraints());
 
         btn_viewCart.setText("Ver carrito");
-        btn_viewCart.setMaximumSize(new java.awt.Dimension(117, 23));
-        btn_viewCart.setMinimumSize(new java.awt.Dimension(117, 23));
-        btn_viewCart.setPreferredSize(new java.awt.Dimension(117, 23));
+        btn_viewCart.setMaximumSize(new java.awt.Dimension(125, 23));
+        btn_viewCart.setMinimumSize(new java.awt.Dimension(125, 23));
+        btn_viewCart.setPreferredSize(new java.awt.Dimension(125, 23));
         jPanel_btnsCart.add(btn_viewCart, new java.awt.GridBagConstraints());
 
         btn_removeFromCart.setText("Quitar del carrito");
-        btn_removeFromCart.setMaximumSize(new java.awt.Dimension(117, 23));
-        btn_removeFromCart.setMinimumSize(new java.awt.Dimension(117, 23));
-        btn_removeFromCart.setPreferredSize(new java.awt.Dimension(117, 23));
+        btn_removeFromCart.setMaximumSize(new java.awt.Dimension(125, 23));
+        btn_removeFromCart.setMinimumSize(new java.awt.Dimension(125, 23));
+        btn_removeFromCart.setPreferredSize(new java.awt.Dimension(125, 23));
         jPanel_btnsCart.add(btn_removeFromCart, new java.awt.GridBagConstraints());
 
         table_books.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Restantes", "Precio", "Título", "Autor", "Editora", "Edición", "Género"
@@ -151,6 +208,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         table_books.setMaximumSize(new java.awt.Dimension(600, 64));
+        table_books.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane_tableBooks.setViewportView(table_books);
 
         jPanel_logout.setBorder(new javax.swing.border.MatteBorder(null));
@@ -284,6 +342,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btn_addToCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addToCartActionPerformed
         // TODO add your handling code here:
+        AgregarCarrito();
     }//GEN-LAST:event_btn_addToCartActionPerformed
 
     private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
@@ -293,6 +352,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void searchBarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBarFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_searchBarFocusGained
+
+    private void btn_searchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchBarActionPerformed
+        // TODO add your handling code here:
+        BuscarLibros();
+    }//GEN-LAST:event_btn_searchBarActionPerformed
+
+    private void searchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchBarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -352,4 +420,172 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTable table_books;
     private javax.swing.JTable table_cart;
     // End of variables declaration//GEN-END:variables
+
+    private void RefreshTablaLibros() {
+        try {
+            Conexion miconexion = new Conexion();
+            String sql = "Select * FROM Libros";
+            ResultSet rs = miconexion.consulta(sql);
+            ResultSetMetaData rsMd = rs.getMetaData();
+            int numeroColumnas = rsMd.getColumnCount();
+
+//            String titulos[] = {"Asignatura", "Creditos", "Nota", "Semestre"};
+//            DefaultTableModel modelo = new DefaultTableModel(null, titulos);
+//            this.table_books.setModel(modelo);
+            DefaultTableModel modelo = (DefaultTableModel) table_books.getModel();
+            modelo.setRowCount(0);
+
+            while (rs.next()) {
+                Object[] fila = new Object[numeroColumnas];
+                for (int y = 0; y < numeroColumnas; y++) {
+                    fila[y] = rs.getObject(y + 1);
+                }
+                modelo.addRow(fila);
+            }
+
+            rs.close();
+//            stmt.close();
+//            c.close();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void RefreshTablaCarrito() {
+        try {
+            Conexion miconexion = new Conexion();
+            String sql = "Select ID,Titulo,Autor,Precio,Cantidad FROM Carrito";
+            ResultSet rs = miconexion.consulta(sql);
+            ResultSetMetaData rsMd = rs.getMetaData();
+            int numeroColumnas = rsMd.getColumnCount();
+
+            DefaultTableModel modelo = (DefaultTableModel) table_cart.getModel();
+            modelo.setRowCount(0);
+
+            while (rs.next()) {
+                Object[] fila = new Object[numeroColumnas];
+                for (int y = 0; y < numeroColumnas; y++) {
+                    fila[y] = rs.getObject(y + 1);
+                }
+                modelo.addRow(fila);
+            }
+            
+            rs.close();
+//            stmt.close();
+//            c.close();
+
+        } catch (Exception e) {
+            System.out.println("RefreshCarrito" + e.getMessage());
+        }
+    }
+
+//    private void tempRandomData() throws SQLException {
+//        try {
+//            Conexion miconexion = new Conexion();
+//            stmt = c.createStatement();
+//            String sql = "INSERT INTO Libros(Inventario, Precio, Titulo, Autor, Editora, Edicion, Genero) "
+//                    + "VALUES("
+//                    + miconexion.randomString(ran.nextInt(3) + 1, poolNums, ran)
+//                    + "," + miconexion.randomString(ran.nextInt(4) + 1, poolNums, ran)
+//                    + ",'" + miconexion.randomString(ran.nextInt(10) + 1, poolChars, ran)
+//                    + "','" + miconexion.randomString(ran.nextInt(10) + 1, poolChars, ran)
+//                    + "','" + miconexion.randomString(ran.nextInt(10) + 1, poolChars, ran)
+//                    + "'," + miconexion.randomString(ran.nextInt(2) + 1, poolNums, ran)
+//                    + ",'" + miconexion.randomString(ran.nextInt(10) + 1, poolChars, ran)
+//                    + "')";
+//            stmt.executeUpdate(sql);
+//
+//            stmt.close();
+//            c.commit();
+//            c.close();
+//
+////            JOptionPane.showMessageDialog(null, "Salvado Correctamente");
+//        } catch (Exception e) {
+//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//        }
+//    }
+
+    public void ConexionCreate() throws ClassNotFoundException, SQLException {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+        } catch (ClassCastException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex1) {
+            ex1.printStackTrace();
+        }
+    }
+
+    private void BuscarLibros() {
+        try {
+            Conexion miconexion = new Conexion();
+            String sql = "SELECT * FROM Libros WHERE\n"
+                    + "ID LIKE '%" + searchBar.getText() + "%' OR\n"
+                    + "Inventario LIKE '%" + searchBar.getText() + "%' OR\n"
+                    + "Precio LIKE '%" + searchBar.getText() + "%' OR\n"
+                    + "Titulo LIKE '%" + searchBar.getText() + "%' OR\n"
+                    + "Autor LIKE '%" + searchBar.getText() + "%' OR\n"
+                    + "Editora LIKE '%" + searchBar.getText() + "%' OR\n"
+                    + "Edicion LIKE '%" + searchBar.getText() + "%' OR\n"
+                    + "Genero LIKE '%" + searchBar.getText() + "%';";
+            ResultSet rs = miconexion.consulta(sql);
+            ResultSetMetaData rsMd = rs.getMetaData();
+            int numeroColumnas = rsMd.getColumnCount();
+
+            DefaultTableModel modelo = (DefaultTableModel) table_books.getModel();
+            modelo.setRowCount(0);
+
+            while (rs.next()) {
+                Object[] fila = new Object[numeroColumnas];
+                for (int y = 0; y < numeroColumnas; y++) {
+                    fila[y] = rs.getObject(y + 1);
+                }
+                modelo.addRow(fila);
+            }
+
+            rs.close();
+//            stmt.close();
+//            c.close();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void AgregarCarrito() {
+
+        if (table_books.getSelectedRow() != -1) {
+            int row = table_books.getSelectedRow();
+            String IdLibro = table_books.getValueAt(row, 0).toString();
+            int cantidadComprar = 0; //Cambiar
+            
+            //Insertar libro en el carrito
+            try {
+//                ConexionCreate();
+                Conexion miconexion = new Conexion();
+                stmt = c.createStatement();
+                String sql = "INSERT INTO Carrito(IDLibro, Titulo, Autor, Precio, Cantidad) "
+                        + "VALUES("
+                        + IdLibro
+                        + ",'" + table_books.getValueAt(row, 3).toString()
+                        + "','" + table_books.getValueAt(row, 4).toString()
+                        + "'," + table_books.getValueAt(row, 2).toString()
+                        + "," + table_books.getValueAt(row, cantidadComprar).toString()
+                        + ")";
+                stmt.executeUpdate(sql);
+
+                stmt.close();
+                c.commit();
+                c.close();
+                
+                RefreshTablaCarrito();
+
+            } catch (Exception e) {
+                System.err.println("AgregarCarrito" + e.getClass().getName() + ": " + e.getMessage());
+            }
+        }
+    }
 }
