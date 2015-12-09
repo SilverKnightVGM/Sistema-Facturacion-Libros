@@ -9,16 +9,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
-//    Conexion miconexion;
+//    Conexion
     Connection c = null;
     Statement stmt = null;
 
@@ -48,7 +51,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 //            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
 //        }
         initComponents();
-        rootPane.setDefaultButton(btn_searchBar);
+//        JRootPane rootPane = SwingUtilities.getRootPane(btn_searchBar);
+//        rootPane.setDefaultButton(btn_searchBar);
+        c = Conexion.dbConnector();
         RefreshTablaLibros();
         RefreshTablaCarrito();
     }
@@ -105,6 +110,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 searchBarFocusGained(evt);
+            }
+        });
+        searchBar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchBarKeyPressed(evt);
             }
         });
 
@@ -362,6 +372,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchBarActionPerformed
 
+    private void searchBarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            // Enter was pressed. Your code goes here.
+            BuscarLibros();
+        }
+    }//GEN-LAST:event_searchBarKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -423,9 +441,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void RefreshTablaLibros() {
         try {
-            Conexion miconexion = new Conexion();
             String sql = "Select * FROM Libros";
-            ResultSet rs = miconexion.consulta(sql);
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
             ResultSetMetaData rsMd = rs.getMetaData();
             int numeroColumnas = rsMd.getColumnCount();
 
@@ -443,6 +461,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 modelo.addRow(fila);
             }
 
+            pst.close();
             rs.close();
 //            stmt.close();
 //            c.close();
@@ -454,9 +473,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void RefreshTablaCarrito() {
         try {
-            Conexion miconexion = new Conexion();
             String sql = "Select ID,Titulo,Autor,Precio,Cantidad FROM Carrito";
-            ResultSet rs = miconexion.consulta(sql);
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
             ResultSetMetaData rsMd = rs.getMetaData();
             int numeroColumnas = rsMd.getColumnCount();
 
@@ -470,10 +489,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 }
                 modelo.addRow(fila);
             }
-            
+
+            pst.close();
             rs.close();
-//            stmt.close();
-//            c.close();
 
         } catch (Exception e) {
             System.out.println("RefreshCarrito" + e.getMessage());
@@ -505,23 +523,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 //            System.err.println(e.getClass().getName() + ": " + e.getMessage());
 //        }
 //    }
-
-    public void ConexionCreate() throws ClassNotFoundException, SQLException {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
-            c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
-        } catch (ClassCastException ex) {
-            ex.printStackTrace();
-        } catch (SQLException ex1) {
-            ex1.printStackTrace();
-        }
-    }
-
     private void BuscarLibros() {
         try {
-            Conexion miconexion = new Conexion();
             String sql = "SELECT * FROM Libros WHERE\n"
                     + "ID LIKE '%" + searchBar.getText() + "%' OR\n"
                     + "Inventario LIKE '%" + searchBar.getText() + "%' OR\n"
@@ -531,7 +534,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     + "Editora LIKE '%" + searchBar.getText() + "%' OR\n"
                     + "Edicion LIKE '%" + searchBar.getText() + "%' OR\n"
                     + "Genero LIKE '%" + searchBar.getText() + "%';";
-            ResultSet rs = miconexion.consulta(sql);
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
             ResultSetMetaData rsMd = rs.getMetaData();
             int numeroColumnas = rsMd.getColumnCount();
 
@@ -546,9 +550,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 modelo.addRow(fila);
             }
 
+            pst.close();
             rs.close();
-//            stmt.close();
-//            c.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -560,32 +563,77 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (table_books.getSelectedRow() != -1) {
             int row = table_books.getSelectedRow();
             String IdLibro = table_books.getValueAt(row, 0).toString();
-            int cantidadComprar = 0; //Cambiar
+            int checkIfAlreadyInCart = checkIfAlreadyInCart(IdLibro);
             
             //Insertar libro en el carrito
             try {
-//                ConexionCreate();
-                Conexion miconexion = new Conexion();
-                stmt = c.createStatement();
-                String sql = "INSERT INTO Carrito(IDLibro, Titulo, Autor, Precio, Cantidad) "
-                        + "VALUES("
-                        + IdLibro
-                        + ",'" + table_books.getValueAt(row, 3).toString()
-                        + "','" + table_books.getValueAt(row, 4).toString()
-                        + "'," + table_books.getValueAt(row, 2).toString()
-                        + "," + table_books.getValueAt(row, cantidadComprar).toString()
-                        + ")";
-                stmt.executeUpdate(sql);
 
-                stmt.close();
-                c.commit();
-                c.close();
-                
-                RefreshTablaCarrito();
+                int cantidadComprar = Integer.parseInt(JOptionPane.showInputDialog(rootPane, "Agregar cuantas copias?"));
+                int copiasRestantes = Integer.parseInt(table_books.getValueAt(row, 1).toString());
+
+                if (cantidadComprar >= 1 && (cantidadComprar <= copiasRestantes) && (checkIfAlreadyInCart == -1)) {
+                    try {
+                        String sql = "INSERT INTO Carrito(IDLibro, Titulo, Autor, Precio, Cantidad) "
+                                + "VALUES("
+                                + IdLibro
+                                + ",'" + table_books.getValueAt(row, 3).toString()
+                                + "','" + table_books.getValueAt(row, 4).toString()
+                                + "'," + table_books.getValueAt(row, 2).toString()
+                                + "," + cantidadComprar
+                                + ")";
+
+                        PreparedStatement pst = c.prepareStatement(sql);
+                        pst.execute();
+
+                        pst.close();
+
+                        RefreshTablaCarrito();
+                    } catch (Exception e) {
+                        System.err.println("AgregarCarrito" + e.getClass().getName() + ": " + e.getMessage());
+                    }
+                } else {
+                    if (cantidadComprar <= 0) {
+                        JOptionPane.showMessageDialog(rootPane, "Cantidad incorrecta!");
+                    }
+                    if (cantidadComprar >= copiasRestantes) {
+                        JOptionPane.showMessageDialog(rootPane, "Demasiadas copias!");
+                    }
+                    if (checkIfAlreadyInCart >= 0) {
+                        JOptionPane.showMessageDialog(rootPane, "Ya esta en el carrito!");
+                    }
+                }
 
             } catch (Exception e) {
-                System.err.println("AgregarCarrito" + e.getClass().getName() + ": " + e.getMessage());
+                JOptionPane.showMessageDialog(rootPane, "Error! Cantidad incorrecta!");
             }
         }
+    }
+
+    public int checkIfAlreadyInCart(String IDLibroParaAgregar) {
+        
+        int cartCheck = 0;
+
+        try {
+            String sql = "Select IDLibro FROM Carrito WHERE IDLibro = ?";
+            PreparedStatement pst = c.prepareStatement(sql);
+            pst.setString(1, IDLibroParaAgregar);
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.isBeforeFirst()) {
+                System.out.println("Found data");
+                cartCheck = 1;
+                pst.close();
+                rs.close();
+            }else{
+                System.out.println("No data");
+                cartCheck = -1;
+                pst.close();
+                rs.close();
+            }
+
+        } catch (Exception e) {
+            System.out.println("checkIfAlreadyInCart" + e.getMessage());
+        }
+        return cartCheck;
     }
 }

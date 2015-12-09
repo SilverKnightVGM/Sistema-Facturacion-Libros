@@ -13,7 +13,18 @@ public class Conexion {
     Connection c = null;
     Statement stmt = null;
     ResultSet rs;
-    
+    Connection conn = null;
+
+    public static Connection dbConnector() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn  = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
+            System.out.println("Static Opened database successfully");
+            return conn;
+        } catch (ClassNotFoundException | SQLException classNotFoundException) {
+        }
+        return null;
+    }
 
     public Conexion() throws ClassNotFoundException, SQLException {
         try {
@@ -27,7 +38,7 @@ public class Conexion {
         } catch (SQLException ex1) {
             ex1.printStackTrace();
         }
-        
+
         //miconexion.close();
         //stSentencias.close();
     }
@@ -149,8 +160,8 @@ public class Conexion {
     public void BorrarCarrito() {
         //TODO
     }
-    
-        public String randomString(int len, String chars, Random rnd) {
+
+    public String randomString(int len, String chars, Random rnd) {
 //        Random rnd = new Random();
         StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
