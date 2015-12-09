@@ -15,6 +15,9 @@ public class Conexion {
     ResultSet rs;
     Connection conn = null;
 
+    public Conexion() {
+    }
+
     public static Connection dbConnector() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -26,39 +29,25 @@ public class Conexion {
         return null;
     }
 
-    public Conexion() throws ClassNotFoundException, SQLException {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
-            c.setAutoCommit(false);
-            stmt = c.createStatement();
-            System.out.println("Opened database successfully");
-        } catch (ClassCastException ex) {
-            ex.printStackTrace();
-        } catch (SQLException ex1) {
-            ex1.printStackTrace();
-        }
-
-        //miconexion.close();
-        //stSentencias.close();
-    }
-
-//    public void ProbarConexion() throws ClassNotFoundException, SQLException {
+//    public Conexion() throws ClassNotFoundException, SQLException {
 //        try {
 //            Class.forName("org.sqlite.JDBC");
 //            c = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
 //            c.setAutoCommit(false);
-//            System.out.println("Opened database successfully first");
+//            stmt = c.createStatement();
+//            System.out.println("Opened database successfully");
 //        } catch (ClassCastException ex) {
 //            ex.printStackTrace();
 //        } catch (SQLException ex1) {
 //            ex1.printStackTrace();
 //        }
 //
-//        c.close();
-//        stmt.close();
+//        //miconexion.close();
+//        //stSentencias.close();
 //    }
-    public ResultSet consulta(String sql) throws SQLException {
+
+
+    private ResultSet consulta(String sql) throws SQLException {
         try {
             rs = stmt.executeQuery(sql);
         } catch (SQLException ex) {
@@ -67,14 +56,15 @@ public class Conexion {
         return rs;
     }
 
-    public void CrearTablas() throws ClassNotFoundException, SQLException {
+    public void CrearTablas() {
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
-            c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
+//            Class.forName("org.sqlite.JDBC");
+//            c = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
+//            c.setAutoCommit(false);
+//            System.out.println("Opened database successfully");
 
-            stmt = c.createStatement();
+//            stmt = c.createStatement();
+            c = dbConnector();
 
             //Tabla Libros
             String sql = "CREATE TABLE IF NOT EXISTS Libros "
@@ -86,7 +76,9 @@ public class Conexion {
                     + "Editora TEXT, "
                     + "Edicion INTEGER, "
                     + "Genero TEXT)";
-            stmt.executeUpdate(sql);
+//            stmt.executeUpdate(sql);
+            PreparedStatement pst = c.prepareStatement(sql);
+            pst.execute();
 
             //Tabla Empleados
             sql = "CREATE TABLE IF NOT EXISTS Empleados "
@@ -96,7 +88,8 @@ public class Conexion {
                     + "Usuario TEXT NOT NULL, "
                     + "Password TEXT, "
                     + "Nivel TEXT NOT NULL)";
-            stmt.executeUpdate(sql);
+            pst = c.prepareStatement(sql);
+            pst.execute();
 
             //Tabla Ventas
             sql = "CREATE TABLE IF NOT EXISTS Ventas "
@@ -106,7 +99,8 @@ public class Conexion {
                     + "IDEmpleado INTEGER NOT NULL, "
                     + "IDCliente INTEGER NOT NULL, "
                     + "PrecioTotal REAL NOT NULL)";
-            stmt.executeUpdate(sql);
+            pst = c.prepareStatement(sql);
+            pst.execute();
 
             //Tabla Clientes
             sql = "CREATE TABLE IF NOT EXISTS Clientes "
@@ -115,13 +109,12 @@ public class Conexion {
                     + "Apellido TEXT, "
                     + "Telefono INTEGER, "
                     + "Email TEXT)";
-            stmt.executeUpdate(sql);
+            pst = c.prepareStatement(sql);
+            pst.execute();
 
-            stmt.close();
-            c.commit(); //if c.setAutoCommit(false);
-            c.close();
+            pst.close();
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e);
         }
@@ -130,13 +123,7 @@ public class Conexion {
     public void CrearCarrito() {
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
-            c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
-
-            stmt = c.createStatement();
-
+            c = dbConnector();
             //Tabla Carrito
             String sql = "CREATE TABLE IF NOT EXISTS Carrito "
                     + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -144,21 +131,33 @@ public class Conexion {
                     + "Titulo TEXT NOT NULL, "
                     + "Autor TEXT NOT NULL, "
                     + "Precio REAL NOT NULL, "
-                    + "Cantidad INTEGER NOT NULL)";
-            stmt.executeUpdate(sql);
+                    + "Cantidad INTEGER NOT NULL,"
+                    + "FOREIGN KEY(IDLibro) REFERENCES Libros(ID)"
+                    + ")";
+            PreparedStatement pst = c.prepareStatement(sql);
+            pst.execute();
+            
+            pst.close();
 
-            stmt.close();
-            c.commit(); //if c.setAutoCommit(false);
-            c.close();
-
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e);
         }
     }
 
     public void BorrarCarrito() {
-        //TODO
+        try {
+            c = dbConnector();
+
+            String sql = "DROP TABLE IF EXISTS Carrito;";
+            PreparedStatement pst = c.prepareStatement(sql);
+            pst.execute();
+            pst.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     public String randomString(int len, String chars, Random rnd) {
