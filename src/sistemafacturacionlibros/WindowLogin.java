@@ -6,6 +6,13 @@
 package sistemafacturacionlibros;
 
 import java.awt.Component;
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,12 +25,21 @@ import javax.swing.JProgressBar;
  */
 
 public class WindowLogin extends javax.swing.JFrame {
-
+        
+        Connection c = null;
+        Statement stmt = null;
+        Conexion miconexion = new Conexion();
+        
+        private VentanaPrincipal VPs;
+          //Create connection to db and load data
+       
     /**
      * Creates new form WindowLogin
      */
     public WindowLogin() {
         initComponents();
+        
+        c = Conexion.dbConnector();
     }
     public void CloseFrame(){
         super.dispose();
@@ -112,7 +128,7 @@ public class WindowLogin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginPasstxt)
                     .addComponent(loginPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addComponent(imageBook, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -123,25 +139,7 @@ public class WindowLogin extends javax.swing.JFrame {
     private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
         //Login sencillo para usar hasta integrar login con base de datos
         //TODO
-        String username = "admin";
-        String password = "admin";
-        SistemaFacturacionLibros sfc = new SistemaFacturacionLibros();
-        if (username.equals(loginUser.getText()) || password.equals(loginPass.getText()))
-        {
-            VentanaPrincipal s = new VentanaPrincipal();
-            s.setTitle("Main Window");
-            s.setVisible(true);
-            s.setResizable(true);
-
-        CloseFrame();
-        }
-        else{
-            
-            JOptionPane.showMessageDialog(null,"Los datos son erroneos", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        {
-           
-        }
+        checkIfUserPassExist();
 // TODO add your handling code here:
         
     }//GEN-LAST:event_loginbtnActionPerformed
@@ -194,4 +192,36 @@ public class WindowLogin extends javax.swing.JFrame {
     private javax.swing.JLabel loginUsertxt;
     private javax.swing.JButton loginbtn;
     // End of variables declaration//GEN-END:variables
+
+    public void checkIfUserPassExist(){
+        try{
+            String sql = "SELECT Usuario, Password FROM Empleados WHERE Usuario=? AND Password=?";
+            PreparedStatement pst = c.prepareStatement(sql);
+             pst.setString(1, loginUser.getText());
+             pst.setString(2, Arrays.toString(loginPass.getPassword()));
+             ResultSet rs = pst.executeQuery();
+             
+             if(rs.isBeforeFirst()){
+               
+                VentanaPrincipal VP = new VentanaPrincipal();
+                VP.setVisible(true);
+                VP.setResizable(false);
+                VP.setTextField(loginUser.getText());
+                  pst.close();
+                rs.close();
+             } else{
+                 JOptionPane.showMessageDialog(null, "Dato equivocado");
+                  pst.close();
+                rs.close();
+             }
+        }catch(SQLException | HeadlessException e){
+            System.out.println("checkIfUserPassExist " + e.getMessage());
+        }
+    }
+    
+    public String getTextField(){
+        return loginUser.getText();
+    }
+
+
 }
