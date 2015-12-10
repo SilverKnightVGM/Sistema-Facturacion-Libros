@@ -25,13 +25,15 @@ public class SistemaFacturacionLibros {
 
     public static void main(String[] args) throws ClassNotFoundException {
         // TODO code application logic here
-
-        for (int i = 0; i < 10; i++) {
-//                    String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-//                    System.out.println("uuid = " + uuid);
-            String test = randomString(i, pool, ran);
-            System.out.println("TEST = " + test);
-        }
+       WindowLogin wl = new WindowLogin();
+       wl.setVisible(true);
+       wl.setTitle("Login");
+//        for (int i = 0; i < 10; i++) {
+////                    String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+////                    System.out.println("uuid = " + uuid);
+//            String test = randomString(i, pool, ran);
+//            System.out.println("TEST = " + test);
+//        }
 
 //        try {
 //            UIManager.setLookAndFeel("com.pagosoft.plaf.PgsLookAndFeel");

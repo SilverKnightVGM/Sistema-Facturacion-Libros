@@ -48,7 +48,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         initComponents();
         miconexion.CrearTablas();
         miconexion.CrearCarrito();
-
+        String v = Conexion.getTexField();
+        label_username.setText(v);
         //Disable table column drag and drop
         table_books.getTableHeader().setReorderingAllowed(false);
         table_cart.getTableHeader().setReorderingAllowed(false);
@@ -70,6 +71,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         for (int i = 0; i < table_cart.getColumnCount(); i++) {
             alignRight(table_cart, i);
         }
+    }
+
+    public void CloseFrame() {
+        super.dispose();
     }
 
     private void alignRight(JTable table, int column) {
@@ -104,8 +109,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         table_books = new javax.swing.JTable();
         jPanel_logout = new javax.swing.JPanel();
         Bienvenido = new javax.swing.JLabel();
-        btn_logout = new javax.swing.JButton();
-        label_userName = new javax.swing.JLabel();
+        btn_volver = new javax.swing.JButton();
+        label_username = new javax.swing.JLabel();
         jPanel_total = new javax.swing.JPanel();
         label_total = new javax.swing.JLabel();
         Total = new javax.swing.JLabel();
@@ -266,9 +271,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         table_books.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table_books.getTableHeader().setReorderingAllowed(false);
         jScrollPane_tableBooks.setViewportView(table_books);
-        if (table_books.getColumnModel().getColumnCount() > 0) {
-            table_books.getColumnModel().getColumn(0).setCellRenderer(null);
-        }
 
         jPanel_logout.setBorder(new javax.swing.border.MatteBorder(null));
         jPanel_logout.setMaximumSize(new java.awt.Dimension(2147483647, 125));
@@ -284,10 +286,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(18, 11, 0, 11);
         jPanel_logout.add(Bienvenido, gridBagConstraints);
 
-        btn_logout.setText("Logout");
-        btn_logout.addActionListener(new java.awt.event.ActionListener() {
+        btn_volver.setText("Volver");
+        btn_volver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_logoutActionPerformed(evt);
+                btn_volverActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -296,17 +298,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 57;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 11, 0, 11);
-        jPanel_logout.add(btn_logout, gridBagConstraints);
+        jPanel_logout.add(btn_volver, gridBagConstraints);
 
-        label_userName.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        label_userName.setText("<USER_NAME>");
+        label_username.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        label_username.setText("<USER_NAME>");
+        label_username.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                label_usernameComponentShown(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 11;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(6, 11, 12, 11);
-        jPanel_logout.add(label_userName, gridBagConstraints);
+        jPanel_logout.add(label_username, gridBagConstraints);
 
         label_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label_total.setText("<TOTAL>");
@@ -355,15 +362,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel_bottomLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jScrollPane_tableBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel_btnsCart, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addComponent(jPanel_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(10, 10, 10)
+                .addGap(13, 13, 13)
                 .addGroup(jPanel_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_bottomLayout.createSequentialGroup()
                         .addComponent(jPanel_logout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 30, Short.MAX_VALUE))
+                        .addGap(0, 32, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -404,9 +411,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         AgregarCarrito();
     }//GEN-LAST:event_btn_addToCartActionPerformed
 
-    private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
+    private void btn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volverActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btn_logoutActionPerformed
+        VentanaOpciones VO = new VentanaOpciones();
+        VO.setVisible(true);
+        VO.setTitle("Ventana Opciones");
+        CloseFrame();
+
+    }//GEN-LAST:event_btn_volverActionPerformed
 
     private void searchBarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBarFocusGained
         // TODO add your handling code here:
@@ -415,11 +427,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btn_searchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchBarActionPerformed
         // TODO add your handling code here:
         BuscarLibros();
-        
-        if("cheat = randomData()".equals(searchBar.getText())){
+
+        if ("cheat = randomData()".equals(searchBar.getText())) {
             tempRandomData();
         }
-        
+
     }//GEN-LAST:event_btn_searchBarActionPerformed
 
     private void searchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBarActionPerformed
@@ -442,6 +454,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btn_viewCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_viewCartActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_viewCartActionPerformed
+
+    private void label_usernameComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_label_usernameComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_label_usernameComponentShown
 
     /**
      * @param args the command line arguments
@@ -483,10 +499,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel Buscar;
     private javax.swing.JLabel Total;
     private javax.swing.JButton btn_addToCart;
-    private javax.swing.JButton btn_logout;
     private javax.swing.JButton btn_removeFromCart;
     private javax.swing.JButton btn_searchBar;
     private javax.swing.JButton btn_viewCart;
+    private javax.swing.JButton btn_volver;
     private javax.swing.JPanel jPanel_bottom;
     private javax.swing.JPanel jPanel_btnsCart;
     private javax.swing.JPanel jPanel_logout;
@@ -496,7 +512,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane_bottom;
     private javax.swing.JScrollPane jScrollPane_tableBooks;
     private javax.swing.JLabel label_total;
-    private javax.swing.JLabel label_userName;
+    private static javax.swing.JLabel label_username;
     private javax.swing.JTextField searchBar;
     private javax.swing.JTable table_books;
     private javax.swing.JTable table_cart;
@@ -670,7 +686,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(rootPane, "Error! Cantidad incorrecta!");
             }
-        } else{
+        } else {
             JOptionPane.showMessageDialog(rootPane, "Seleccione un libro primero");
         }
     }
@@ -753,5 +769,5 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Selecciona algo del carrito primero!");
         }
     }
-    
+
 }

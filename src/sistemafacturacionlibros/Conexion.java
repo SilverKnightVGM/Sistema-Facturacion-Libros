@@ -14,7 +14,7 @@ public class Conexion {
     Statement stmt = null;
     ResultSet rs;
     Connection conn = null;
-
+    private static String userName;
     public Conexion() {
     }
 
@@ -168,4 +168,11 @@ public class Conexion {
         }
         return sb.toString();
     }
+     public static void setTextField(String user){
+        userName = user;
+    }
+     
+     public static String getTexField(){
+         return userName;
+     }
 }

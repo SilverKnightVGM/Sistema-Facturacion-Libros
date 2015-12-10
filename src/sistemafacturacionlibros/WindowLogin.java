@@ -23,27 +23,29 @@ import javax.swing.JProgressBar;
  *
  * @author Arielo
  */
-
 public class WindowLogin extends javax.swing.JFrame {
-        
-        Connection c = null;
-        Statement stmt = null;
-        Conexion miconexion = new Conexion();
-        
-        private VentanaPrincipal VPs;
-          //Create connection to db and load data
-       
+
+    Connection c = null;
+    Statement stmt = null;
+    Conexion miconexion = new Conexion();
+
+    private VentanaPrincipal VPs;
+    String loginuser;
+
     /**
      * Creates new form WindowLogin
      */
     public WindowLogin() {
         initComponents();
-        
+        loginuser = loginUser.toString();
         c = Conexion.dbConnector();
+
     }
-    public void CloseFrame(){
+
+    public void CloseFrame() {
         super.dispose();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -135,13 +137,13 @@ public class WindowLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
         //Cuando el boton sea presionado
-        //TODO
+    //TODO
     private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
         //Login sencillo para usar hasta integrar login con base de datos
         //TODO
         checkIfUserPassExist();
 // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_loginbtnActionPerformed
 
     private void loginUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginUserActionPerformed
@@ -188,40 +190,38 @@ public class WindowLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPasswordField loginPass;
     private javax.swing.JLabel loginPasstxt;
-    private javax.swing.JTextField loginUser;
+    private static javax.swing.JTextField loginUser;
     private javax.swing.JLabel loginUsertxt;
     private javax.swing.JButton loginbtn;
     // End of variables declaration//GEN-END:variables
 
-    public void checkIfUserPassExist(){
-        try{
+    public void checkIfUserPassExist() {
+        try {
             String sql = "SELECT Usuario, Password FROM Empleados WHERE Usuario=? AND Password=?";
             PreparedStatement pst = c.prepareStatement(sql);
-             pst.setString(1, loginUser.getText());
-             pst.setString(2, Arrays.toString(loginPass.getPassword()));
-             ResultSet rs = pst.executeQuery();
-             
-             if(rs.isBeforeFirst()){
-               
-                VentanaPrincipal VP = new VentanaPrincipal();
-                VP.setVisible(true);
-                VP.setResizable(false);
-                VP.setTextField(loginUser.getText());
-                  pst.close();
+            pst.setString(1, loginUser.getText());
+            pst.setString(2, Arrays.toString(loginPass.getPassword()));
+            ResultSet rs = pst.executeQuery();
+            Conexion.setTextField(loginUser.getText());
+            if (rs.isBeforeFirst()) {
+                VentanaOpciones VO = new VentanaOpciones();
+                VO.setVisible(true);
+                VO.setTitle("Ventana Opciones");
+                CloseFrame();
+//                VentanaPrincipal VP = new VentanaPrincipal();
+//                VP.setVisible(true);
+//                VP.setResizable(false);
+                // VP.setTextField(loginUser.getText());
+                pst.close();
                 rs.close();
-             } else{
-                 JOptionPane.showMessageDialog(null, "Dato equivocado");
-                  pst.close();
+            } else {
+                JOptionPane.showMessageDialog(null, "Dato equivocado");
+                pst.close();
                 rs.close();
-             }
-        }catch(SQLException | HeadlessException e){
+            }
+        } catch (SQLException | HeadlessException e) {
             System.out.println("checkIfUserPassExist " + e.getMessage());
         }
     }
-    
-    public String getTextField(){
-        return loginUser.getText();
-    }
-
 
 }
