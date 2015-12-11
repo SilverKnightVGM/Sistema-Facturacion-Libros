@@ -31,6 +31,7 @@ public class WindowLogin extends javax.swing.JFrame {
 
     private VentanaPrincipal VPs;
     String loginuser;
+    
 
     /**
      * Creates new form WindowLogin
@@ -39,6 +40,8 @@ public class WindowLogin extends javax.swing.JFrame {
         initComponents();
         loginuser = loginUser.toString();
         c = Conexion.dbConnector();
+//        miconexion.CrearTablas();
+//        miconexion.defaultAdmin();
 
     }
 
@@ -201,19 +204,23 @@ public class WindowLogin extends javax.swing.JFrame {
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setString(1, loginUser.getText());
             pst.setString(2, Arrays.toString(loginPass.getPassword()));
+//            String passText = new String(loginPass.getPassword());
+//            pst.setString(2, passText);
             ResultSet rs = pst.executeQuery();
             Conexion.setTextField(loginUser.getText());
             if (rs.isBeforeFirst()) {
-                VentanaOpciones VO = new VentanaOpciones();
-                VO.setVisible(true);
-                VO.setTitle("Ventana Opciones");
-                CloseFrame();
 //                VentanaPrincipal VP = new VentanaPrincipal();
 //                VP.setVisible(true);
 //                VP.setResizable(false);
                 // VP.setTextField(loginUser.getText());
                 pst.close();
                 rs.close();
+                
+                VentanaOpciones VO = new VentanaOpciones();
+                VO.setVisible(true);
+                VO.setTitle("Ventana Opciones");
+                CloseFrame();
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Dato equivocado");
                 pst.close();

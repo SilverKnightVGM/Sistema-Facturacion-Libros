@@ -6,6 +6,8 @@ package sistemafacturacionlibros;
  */
 import java.sql.*;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Conexion {
@@ -15,13 +17,14 @@ public class Conexion {
     ResultSet rs;
     Connection conn = null;
     private static String userName;
+
     public Conexion() {
     }
 
     public static Connection dbConnector() {
         try {
             Class.forName("org.sqlite.JDBC");
-            Connection conn  = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:SistemaLibros.sqlite");
             System.out.println("Static Opened database successfully");
             return conn;
         } catch (ClassNotFoundException | SQLException classNotFoundException) {
@@ -45,8 +48,6 @@ public class Conexion {
 //        //miconexion.close();
 //        //stSentencias.close();
 //    }
-
-
     private ResultSet consulta(String sql) throws SQLException {
         try {
             rs = stmt.executeQuery(sql);
@@ -136,7 +137,7 @@ public class Conexion {
                     + ")";
             PreparedStatement pst = c.prepareStatement(sql);
             pst.execute();
-            
+
             pst.close();
 
         } catch (SQLException e) {
@@ -168,11 +169,62 @@ public class Conexion {
         }
         return sb.toString();
     }
-     public static void setTextField(String user){
+
+    public static void setTextField(String user) {
         userName = user;
     }
-     
-     public static String getTexField(){
-         return userName;
-     }
+
+    public static String getTexField() {
+        return userName;
+    }
+
+    public void defaultAdmin() {
+
+        c = dbConnector();
+
+        //Inserts default admin if it is a new database
+        int anyUser = checkIfAnyUsers();
+
+        if (anyUser == -1) {
+            try {
+                String sql = "INSERT INTO Empleados (ID, Nombre, Apellido, Usuario, Password, Nivel) "
+                        + "SELECT 1,'Jon','Doe','admin','[a, d, m, i, n]','Admin' "
+                        + "WHERE NOT EXISTS (SELECT 1 FROM Empleados WHERE ID=1)";
+
+                PreparedStatement pst = c.prepareStatement(sql);
+                pst.execute();
+            } catch (SQLException ex) {
+                Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public int checkIfAnyUsers() {
+
+        int userCheck = 0;
+
+        c = dbConnector();
+
+        try {
+            String sql = "Select ID FROM Empleados";
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                System.out.println("Found data");
+                userCheck = 1;
+                pst.close();
+                rs.close();
+            } else {
+                System.out.println("No data");
+                userCheck = -1;
+                pst.close();
+                rs.close();
+            }
+
+        } catch (Exception e) {
+            System.out.println("checkIfAnyUsers" + e.getMessage());
+        }
+        return userCheck;
+    }
 }
