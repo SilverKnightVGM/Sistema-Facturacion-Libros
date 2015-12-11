@@ -200,7 +200,7 @@ public class WindowLogin extends javax.swing.JFrame {
 
     public void checkIfUserPassExist() {
         try {
-            String sql = "SELECT Usuario, Password FROM Empleados WHERE Usuario=? AND Password=?";
+            String sql = "SELECT ID, Usuario, Password FROM Empleados WHERE Usuario=? AND Password=?";
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setString(1, loginUser.getText());
             pst.setString(2, Arrays.toString(loginPass.getPassword()));
@@ -208,11 +208,21 @@ public class WindowLogin extends javax.swing.JFrame {
 //            pst.setString(2, passText);
             ResultSet rs = pst.executeQuery();
             Conexion.setTextField(loginUser.getText());
+            
+//            String sqlUserID = "SELECT ID FROM Empleados WHERE Usuario=? AND Password=?";
+//            pst = c.prepareStatement(sqlUserID);
+//            pst.setString(1, loginUser.getText());
+//            pst.setString(2, Arrays.toString(loginPass.getPassword()));
+//            rs = pst.executeQuery();
+         
+
             if (rs.isBeforeFirst()) {
-//                VentanaPrincipal VP = new VentanaPrincipal();
-//                VP.setVisible(true);
-//                VP.setResizable(false);
-                // VP.setTextField(loginUser.getText());
+                
+                while(rs.next()){
+                    int id = rs.getInt("ID");
+                    Conexion.setUserID(id);
+                }
+
                 pst.close();
                 rs.close();
                 

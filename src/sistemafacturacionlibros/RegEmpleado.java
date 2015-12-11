@@ -85,16 +85,13 @@ public class RegEmpleado extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        emp_nivel = new javax.swing.JComboBox<>();
+        emp_nivel = new javax.swing.JComboBox<String>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         emp_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Nombre", "Apelido", "Usuario", "Nivel"
@@ -141,7 +138,7 @@ public class RegEmpleado extends javax.swing.JFrame {
 
         jLabel6.setText("Nivel");
 
-        emp_nivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Empleado" }));
+        emp_nivel.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Admin", "Empleado" }));
         emp_nivel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emp_nivelActionPerformed(evt);

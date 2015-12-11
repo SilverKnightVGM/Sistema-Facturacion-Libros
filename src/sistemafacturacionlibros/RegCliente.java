@@ -84,10 +84,7 @@ public class RegCliente extends javax.swing.JFrame {
 
         cln_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Nombre", "Apellido", "Telefono", "Email"

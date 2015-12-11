@@ -453,6 +453,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btn_viewCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_viewCartActionPerformed
         // TODO add your handling code here:
+        VentanaCheckout VC = new VentanaCheckout();
+        VC.setVisible(true);
+        VC.setTitle("Checkout");
+        CloseFrame();
     }//GEN-LAST:event_btn_viewCartActionPerformed
 
     private void label_usernameComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_label_usernameComponentShown

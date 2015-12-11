@@ -5,12 +5,34 @@
  */
 package sistemafacturacionlibros;
 
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,27 +40,29 @@ import javax.swing.table.DefaultTableModel;
  * @author Arielo
  */
 public class VentanaCheckout extends javax.swing.JFrame {
+
     Connection c = null;
     Statement stmt = null;
     Conexion miconexion = new Conexion();
-  
-     
+
+    int empleado = Conexion.getUserID();
+    int cliente = Conexion.getClienteID();
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+
     /**
      * Creates new form VentanaCheckout
      */
-    
     public VentanaCheckout() {
         initComponents();
-         miconexion.CrearCarrito();
-         chk_table.getTableHeader().setReorderingAllowed(false);
-         chk_table.setAutoCreateRowSorter(true);   
-         
-          c = Conexion.dbConnector();
-          
-          RefreshTablaCarrito();
-          
-          
-          
+        miconexion.CrearCarrito();
+        chk_table.getTableHeader().setReorderingAllowed(false);
+        chk_table.setAutoCreateRowSorter(true);
+
+        c = Conexion.dbConnector();
+
+        RefreshTablaCarrito();
+
     }
 
     /**
@@ -65,10 +89,7 @@ public class VentanaCheckout extends javax.swing.JFrame {
         chk_table.setAutoCreateRowSorter(true);
         chk_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Titulo", "Autor", "Precio", "Cantidad"
@@ -82,6 +103,7 @@ public class VentanaCheckout extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        chk_table.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(chk_table);
 
         javax.swing.GroupLayout JPanelTableLayout = new javax.swing.GroupLayout(JPanelTable);
@@ -101,6 +123,11 @@ public class VentanaCheckout extends javax.swing.JFrame {
         jButton1.setText("Volver");
 
         jButton2.setText("Procesar compra");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPanelBtnLayout = new javax.swing.GroupLayout(JPanelBtn);
         JPanelBtn.setLayout(JPanelBtnLayout);
@@ -123,7 +150,7 @@ public class VentanaCheckout extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 258, Short.MAX_VALUE)
+            .addGap(0, 191, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,7 +176,7 @@ public class VentanaCheckout extends javax.swing.JFrame {
                                 .addGap(57, 57, 57)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(8, 8, 8)
-                                .addComponent(chk_LabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(chk_LabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(JPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -174,6 +201,35 @@ public class VentanaCheckout extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int response = JOptionPane.showConfirmDialog(rootPane, "Esta accion es irreversible, continuar?", "Confirmar transaccion", dialogButton);
+
+        if (response == JOptionPane.NO_OPTION) {
+            System.out.println("No button clicked");
+        } else if (response == JOptionPane.YES_OPTION) {
+            System.out.println("Yes button clicked");
+            TerminarTransaccion();
+
+            try {
+                PDFCreator pdf = new PDFCreator();
+                Document document = new Document();
+                PdfWriter.getInstance(document, new FileOutputStream("Factura.pdf"));
+                document.open();
+                pdf.addMetaData(document);
+                pdf.addTitlePage(document, createTable(),chk_LabelTotal.getText());
+                document.close();
+                JOptionPane.showMessageDialog(rootPane, "PDF Factura generada!");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (response == JOptionPane.CLOSED_OPTION) {
+            System.out.println("JOptionPane closed");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,7 +280,7 @@ public class VentanaCheckout extends javax.swing.JFrame {
 
     private void RefreshTablaCarrito() {
         try {
-            String sql = "Select ID,Titulo,Autor,Precio,Cantidad FROM Carrito";
+            String sql = "Select IDLibro,Titulo,Autor,Precio,Cantidad FROM Carrito";
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             ResultSetMetaData rsMd = rs.getMetaData();
@@ -248,10 +304,11 @@ public class VentanaCheckout extends javax.swing.JFrame {
             String total = String.valueOf(calcularPrecioCarrito());
             chk_LabelTotal.setText(total);
             System.out.println(calcularPrecioCarrito());
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("RefreshCarrito" + e.getMessage());
         }
-}
+    }
+
     public double calcularPrecioCarrito() {
 
         double total = 0;
@@ -275,4 +332,165 @@ public class VentanaCheckout extends javax.swing.JFrame {
         }
         return total;
     }
+
+    public ArrayList<Double> calcularPrecioLibro() {
+
+        double precio = 0;
+        ArrayList<Double> precioArray = new ArrayList<Double>();
+        int i = 0;
+
+        try {
+            String sql = "SELECT Precio, Cantidad, (Precio*Cantidad) AS Result FROM Carrito;";
+
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                precio = rs.getDouble("Result");
+                precioArray.add(precio);
+                i++;
+            }
+
+            pst.close();
+            rs.close();
+        } catch (SQLException sQLException) {
+        }
+        return precioArray;
+    }
+
+    public void InsertarVentaIndividual(int libro, double precioLibro) {
+
+        try {
+
+            String sql = "INSERT INTO Ventas(IDLibro, IDEmpleado, IDCliente, PrecioTotal) "
+                    + "VALUES("
+                    + libro
+                    + "," + empleado
+                    + "," + cliente
+                    + "," + precioLibro
+                    + ")";
+
+            PreparedStatement pst = c.prepareStatement(sql);
+            pst.execute();
+
+            pst.close();
+
+        } catch (Exception e) {
+            System.err.println("InsertarVenta" + e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public void TerminarTransaccion() {
+
+        int totalRows = chk_table.getRowCount();
+        ArrayList<Double> arrayPrecios = calcularPrecioLibro();
+
+        for (int i = 0; i < totalRows; i++) {
+            InsertarVentaIndividual((int) chk_table.getValueAt(i, 0), arrayPrecios.get(i));
+        }
+    }
+
+//    public void writeCSVfile(JTable table) throws IOException, ClassNotFoundException, SQLException{
+//        Writer writer = null;
+//        DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+//        int nRow = dtm.getRowCount();
+//        int nCol = dtm.getColumnCount();
+//        try {
+//            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("file.csv"), "utf-8"));
+//
+//            //write the header information
+//            StringBuffer bufferHeader = new StringBuffer();
+//            for (int j = 0; j < nCol; j++) {
+//                bufferHeader.append(dtm.getColumnName(j));
+//                if (j!=nCol) bufferHeader.append(",");
+//            }
+//            writer.write(bufferHeader.toString() + "\r\n");
+//
+//           //write row information
+//            for (int i = 0 ; i < nRow ; i++){
+//                 StringBuffer buffer = new StringBuffer();
+//                for (int j = 0 ; j < nCol ; j++){
+//                    buffer.append(dtm.getValueAt(i,j));
+//                    if (j!=nCol) buffer.append(", ");
+//                }
+//                writer.write(buffer.toString() + "\r\n");
+//            }
+//        } finally {
+//              writer.close();
+//        }
+//    }
+    private PdfPTable createTable()
+            throws BadElementException {
+
+        PdfPTable table = new PdfPTable(7);
+        
+        try {
+            String sql = "select L.ID, "
+                    + "L.Titulo, L.Autor, "
+                    + "L.Editora, L.Edicion, "
+                    + "C.Precio, C.Cantidad "
+                    + "from Libros as L "
+                    + "inner join Carrito as C "
+                    + "on C.IDLibro = L.ID";
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            ResultSetMetaData rsMd = rs.getMetaData();
+//            int numeroColumnas = rsMd.getColumnCount();
+
+//            DefaultTableModel modelo = (DefaultTableModel) chk_table.getModel();
+//            modelo.setRowCount(0);
+
+            PdfPCell c1 = new PdfPCell(new Phrase("IDLibro"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+
+            c1 = new PdfPCell(new Phrase("Título"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+
+            c1 = new PdfPCell(new Phrase("Autor"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("Editora"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("Edición"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("Precio"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("Cantidad"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            while (rs.next()) {
+                table.addCell(rs.getString("ID"));
+                table.addCell(rs.getString("Titulo"));
+                table.addCell(rs.getString("Autor"));
+                table.addCell(rs.getString("Editora"));
+                table.addCell(rs.getString("Edicion"));
+                table.addCell(rs.getString("Cantidad"));
+                table.addCell(rs.getString("Precio"));
+            }
+
+            pst.close();
+            rs.close();
+
+        } catch (Exception e) {
+            System.out.println("RefreshCarrito" + e.getMessage());
+        }
+        return table;
+
+    }
+
 }

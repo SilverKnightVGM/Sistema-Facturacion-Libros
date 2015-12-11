@@ -17,6 +17,8 @@ public class Conexion {
     ResultSet rs;
     Connection conn = null;
     private static String userName;
+    private static int userID;
+    private static int clienteID;
 
     public Conexion() {
     }
@@ -176,6 +178,22 @@ public class Conexion {
 
     public static String getTexField() {
         return userName;
+    }
+
+    public static int getUserID() {
+        return userID;
+    }
+
+    public static void setUserID(int userID) {
+        Conexion.userID = userID;
+    }
+
+    public static int getClienteID() {
+        return clienteID;
+    }
+
+    public static void setClienteID(int clienteID) {
+        Conexion.clienteID = clienteID;
     }
 
     public void defaultAdmin() {
