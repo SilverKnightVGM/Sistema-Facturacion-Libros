@@ -291,9 +291,12 @@ public class RegEmpleado extends javax.swing.JFrame {
         if (emp_nombre.getText().isEmpty() || emp_apellido.getText().isEmpty()
                 || emp_usuario.getText().isEmpty() || emp_pass.getPassword().length == 0) {
             JOptionPane.showMessageDialog(null, "Posee campos vacios");
-        } //        else if(){
-        //            
-        //        }
+        } else if (!emp_nombre.getText().matches("^[a-zA-Z]+$") 
+             || !emp_apellido.getText().matches("^[a-zA-Z]+$")){     
+        JOptionPane.showMessageDialog(null, "El campo Nombre no acepta numeros");
+            emp_nombre.setText("");              
+    
+        }
         else {
 
             try {

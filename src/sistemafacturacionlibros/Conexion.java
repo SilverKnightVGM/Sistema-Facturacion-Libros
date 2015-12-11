@@ -19,6 +19,7 @@ public class Conexion {
     private static String userName;
     private static int userID;
     private static int clienteID;
+    private static String sName;
 
     public Conexion() {
     }
@@ -178,6 +179,13 @@ public class Conexion {
 
     public static String getTexField() {
         return userName;
+    }
+    public static String getSelectedName(){
+        return sName;
+    }
+    
+    public static void setSelectedName(String selectedName){
+        sName = selectedName;
     }
 
     public static int getUserID() {

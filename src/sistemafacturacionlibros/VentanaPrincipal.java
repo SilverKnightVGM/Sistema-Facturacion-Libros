@@ -62,7 +62,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         c = Conexion.dbConnector();
         RefreshTablaLibros();
         RefreshTablaCarrito();
-
+        ComboBox();
         //Align table values for every column
         for (int i = 0; i < table_books.getColumnCount(); i++) {
             alignRight(table_books, i);
@@ -103,8 +103,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         table_cart = new javax.swing.JTable();
         jPanel_btnsCart = new javax.swing.JPanel();
         btn_addToCart = new javax.swing.JButton();
-        btn_viewCart = new javax.swing.JButton();
         btn_removeFromCart = new javax.swing.JButton();
+        btn_checkout = new javax.swing.JButton();
         jScrollPane_tableBooks = new javax.swing.JScrollPane();
         table_books = new javax.swing.JTable();
         jPanel_logout = new javax.swing.JPanel();
@@ -114,6 +114,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel_total = new javax.swing.JPanel();
         label_total = new javax.swing.JLabel();
         Total = new javax.swing.JLabel();
+        cln_combobox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -222,17 +224,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel_btnsCart.add(btn_addToCart, new java.awt.GridBagConstraints());
 
-        btn_viewCart.setText("Ver carrito");
-        btn_viewCart.setMaximumSize(new java.awt.Dimension(125, 23));
-        btn_viewCart.setMinimumSize(new java.awt.Dimension(125, 23));
-        btn_viewCart.setPreferredSize(new java.awt.Dimension(125, 23));
-        btn_viewCart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_viewCartActionPerformed(evt);
-            }
-        });
-        jPanel_btnsCart.add(btn_viewCart, new java.awt.GridBagConstraints());
-
         btn_removeFromCart.setText("Quitar del carrito");
         btn_removeFromCart.setMaximumSize(new java.awt.Dimension(135, 23));
         btn_removeFromCart.setMinimumSize(new java.awt.Dimension(135, 23));
@@ -243,6 +234,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jPanel_btnsCart.add(btn_removeFromCart, new java.awt.GridBagConstraints());
+
+        btn_checkout.setText("Checkout");
+        btn_checkout.setMaximumSize(new java.awt.Dimension(125, 23));
+        btn_checkout.setMinimumSize(new java.awt.Dimension(125, 23));
+        btn_checkout.setPreferredSize(new java.awt.Dimension(125, 23));
+        btn_checkout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_checkoutActionPerformed(evt);
+            }
+        });
+        jPanel_btnsCart.add(btn_checkout, new java.awt.GridBagConstraints());
 
         table_books.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -338,6 +340,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addComponent(label_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Cliente");
+
         javax.swing.GroupLayout jPanel_bottomLayout = new javax.swing.GroupLayout(jPanel_bottom);
         jPanel_bottom.setLayout(jPanel_bottomLayout);
         jPanel_bottomLayout.setHorizontalGroup(
@@ -353,7 +358,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addGroup(jPanel_bottomLayout.createSequentialGroup()
                                 .addComponent(jPanel_btnsCart, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel_total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jPanel_total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cln_combobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 786, Short.MAX_VALUE))))
                 .addGap(19, 19, 19))
         );
@@ -363,10 +372,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jScrollPane_tableBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel_btnsCart, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(jPanel_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(13, 13, 13)
+                .addGroup(jPanel_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_bottomLayout.createSequentialGroup()
+                        .addGroup(jPanel_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel_btnsCart, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                            .addComponent(jPanel_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(13, 13, 13))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_bottomLayout.createSequentialGroup()
+                        .addGroup(jPanel_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cln_combobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)))
                 .addGroup(jPanel_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_bottomLayout.createSequentialGroup()
                         .addComponent(jPanel_logout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -451,13 +467,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         QuitarCarrito();
     }//GEN-LAST:event_btn_removeFromCartActionPerformed
 
-    private void btn_viewCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_viewCartActionPerformed
+    private void btn_checkoutActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        Conexion.setSelectedName(cln_combobox.getSelectedItem().toString());
         VentanaCheckout VC = new VentanaCheckout();
         VC.setVisible(true);
         VC.setTitle("Checkout");
         CloseFrame();
-    }//GEN-LAST:event_btn_viewCartActionPerformed
+    }
 
     private void label_usernameComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_label_usernameComponentShown
         // TODO add your handling code here:
@@ -503,10 +520,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel Buscar;
     private javax.swing.JLabel Total;
     private javax.swing.JButton btn_addToCart;
+    private javax.swing.JButton btn_checkout;
     private javax.swing.JButton btn_removeFromCart;
     private javax.swing.JButton btn_searchBar;
-    private javax.swing.JButton btn_viewCart;
     private javax.swing.JButton btn_volver;
+    private javax.swing.JComboBox<String> cln_combobox;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel_bottom;
     private javax.swing.JPanel jPanel_btnsCart;
     private javax.swing.JPanel jPanel_logout;
@@ -547,6 +566,28 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void ComboBox() {
+        try {
+            String sql = "Select Nombre, Apellido, ID FROM Clientes";
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            String nombre = null;
+            String apellido = null;
+            int ID;
+            while (rs.next()) {
+                nombre = rs.getString("Nombre");
+                apellido = rs.getString("Apellido");
+                cln_combobox.addItem(nombre + " "+ apellido);
+            }
+            pst.execute();
+            pst.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private void RefreshTablaCarrito() {

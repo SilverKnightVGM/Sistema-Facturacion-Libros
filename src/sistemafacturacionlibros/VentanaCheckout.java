@@ -60,9 +60,9 @@ public class VentanaCheckout extends javax.swing.JFrame {
         chk_table.setAutoCreateRowSorter(true);
 
         c = Conexion.dbConnector();
-
+        String v = Conexion.getSelectedName();
         RefreshTablaCarrito();
-
+        chk_cliente.setText(v);
     }
 
     /**
@@ -78,11 +78,13 @@ public class VentanaCheckout extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         chk_table = new javax.swing.JTable();
         JPanelBtn = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_volver = new javax.swing.JButton();
+        btn_compra = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        chk_cliente = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         chk_LabelTotal = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,7 +112,7 @@ public class VentanaCheckout extends javax.swing.JFrame {
         JPanelTable.setLayout(JPanelTableLayout);
         JPanelTableLayout.setHorizontalGroup(
             JPanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
         );
         JPanelTableLayout.setVerticalGroup(
             JPanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,12 +122,17 @@ public class VentanaCheckout extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Volver");
-
-        jButton2.setText("Procesar compra");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_volver.setText("Volver");
+        btn_volver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_volverActionPerformed(evt);
+            }
+        });
+
+        btn_compra.setText("Procesar compra");
+        btn_compra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_compraActionPerformed(evt);
             }
         });
 
@@ -135,32 +142,39 @@ public class VentanaCheckout extends javax.swing.JFrame {
             JPanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanelBtnLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(btn_volver)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_compra, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55))
         );
         JPanelBtnLayout.setVerticalGroup(
             JPanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btn_compra, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btn_volver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        chk_cliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 191, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(chk_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 36, Short.MAX_VALUE)
+            .addComponent(chk_cliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Total:");
 
         chk_LabelTotal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("Cliente:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,6 +192,8 @@ public class VentanaCheckout extends javax.swing.JFrame {
                                 .addGap(8, 8, 8)
                                 .addComponent(chk_LabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
                                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(JPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(2, 2, 2))
@@ -185,14 +201,20 @@ public class VentanaCheckout extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(chk_LabelTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(chk_LabelTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)))
                 .addComponent(JPanelTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,7 +224,7 @@ public class VentanaCheckout extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btn_compraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_compraActionPerformed
         // TODO add your handling code here:
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int response = JOptionPane.showConfirmDialog(rootPane, "Esta accion es irreversible, continuar?", "Confirmar transaccion", dialogButton);
@@ -216,12 +238,14 @@ public class VentanaCheckout extends javax.swing.JFrame {
             try {
                 PDFCreator pdf = new PDFCreator();
                 Document document = new Document();
-                PdfWriter.getInstance(document, new FileOutputStream("Factura.pdf"));
+                PdfWriter.getInstance(document, new FileOutputStream("Factura " + chk_cliente.getText() +".pdf"));
                 document.open();
                 pdf.addMetaData(document);
-                pdf.addTitlePage(document, createTable(),chk_LabelTotal.getText());
+                pdf.addTitlePage(document, createTable(), chk_LabelTotal.getText());
                 document.close();
                 JOptionPane.showMessageDialog(rootPane, "PDF Factura generada!");
+                DeleteCarrito();
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -229,8 +253,21 @@ public class VentanaCheckout extends javax.swing.JFrame {
         } else if (response == JOptionPane.CLOSED_OPTION) {
             System.out.println("JOptionPane closed");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+        RefreshTablaCarrito();
 
+    }//GEN-LAST:event_btn_compraActionPerformed
+
+    private void btn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volverActionPerformed
+        // TODO add your handling code here:
+        VentanaPrincipal vp = new VentanaPrincipal();
+        vp.setVisible(true);
+        vp.setTitle("Ventana Principal");
+        CloseFrame();
+    }//GEN-LAST:event_btn_volverActionPerformed
+
+    public void CloseFrame(){
+        super.dispose();
+    }
     /**
      * @param args the command line arguments
      */
@@ -269,11 +306,13 @@ public class VentanaCheckout extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBtn;
     private javax.swing.JPanel JPanelTable;
+    private javax.swing.JButton btn_compra;
+    private javax.swing.JButton btn_volver;
     private javax.swing.JLabel chk_LabelTotal;
+    private javax.swing.JLabel chk_cliente;
     private javax.swing.JTable chk_table;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
@@ -423,7 +462,7 @@ public class VentanaCheckout extends javax.swing.JFrame {
             throws BadElementException {
 
         PdfPTable table = new PdfPTable(7);
-        
+
         try {
             String sql = "select L.ID, "
                     + "L.Titulo, L.Autor, "
@@ -439,7 +478,6 @@ public class VentanaCheckout extends javax.swing.JFrame {
 
 //            DefaultTableModel modelo = (DefaultTableModel) chk_table.getModel();
 //            modelo.setRowCount(0);
-
             PdfPCell c1 = new PdfPCell(new Phrase("IDLibro"));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             table.addCell(c1);
@@ -493,4 +531,11 @@ public class VentanaCheckout extends javax.swing.JFrame {
 
     }
 
+    public void DeleteCarrito() throws SQLException {
+
+        String sql = "DELETE FROM Carrito";
+        PreparedStatement pst = c.prepareStatement(sql);
+        pst.execute();
+
+    }
 }

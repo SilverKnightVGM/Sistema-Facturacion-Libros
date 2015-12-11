@@ -297,7 +297,13 @@ public void RefreshTablaCliente() {
         } else if (cln_telefono.getText().length() < 10) {
             JOptionPane.showMessageDialog(null, "Introduzca un numero de 10 digitos");
             cln_telefono.setText("");
-        } else {
+        } else if (!cln_nombre.getText().matches("^[a-zA-Z]+$") 
+             || !cln_apellido.getText().matches("^[a-zA-Z]+$")){     
+        JOptionPane.showMessageDialog(null, "El campo Nombre no acepta numeros");
+            cln_nombre.setText("");      
+            cln_apellido.setText("");
+    
+        }else {
 
             try {
                 String sql = "INSERT into Clientes (Nombre, Apellido, Telefono, Email) "

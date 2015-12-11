@@ -58,6 +58,7 @@ public class WindowLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        loginNivel = new javax.swing.JTextField();
         loginUsertxt = new javax.swing.JLabel();
         loginPasstxt = new javax.swing.JLabel();
         loginPass = new javax.swing.JPasswordField();
@@ -65,6 +66,8 @@ public class WindowLogin extends javax.swing.JFrame {
         loginUser = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         imageBook = new javax.swing.JLabel();
+
+        loginNivel.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -191,6 +194,7 @@ public class WindowLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imageBook;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField loginNivel;
     private javax.swing.JPasswordField loginPass;
     private javax.swing.JLabel loginPasstxt;
     private static javax.swing.JTextField loginUser;
@@ -200,7 +204,7 @@ public class WindowLogin extends javax.swing.JFrame {
 
     public void checkIfUserPassExist() {
         try {
-            String sql = "SELECT ID, Usuario, Password FROM Empleados WHERE Usuario=? AND Password=?";
+            String sql = "SELECT ID, Usuario, Password, Nivel FROM Empleados WHERE Usuario=? AND Password=?";
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setString(1, loginUser.getText());
             pst.setString(2, Arrays.toString(loginPass.getPassword()));
@@ -216,13 +220,28 @@ public class WindowLogin extends javax.swing.JFrame {
 //            rs = pst.executeQuery();
          
 
-            if (rs.isBeforeFirst()) {
+//            if (rs.isBeforeFirst()) {
+//                
+//                while(rs.next()){
+//                    int id = rs.getInt("ID");
+//                    Conexion.setUserID(id);
+//                }
+//            }
+            if(rs.isBeforeFirst() && "Empleado".equals(rs.getString("Nivel"))){
+                int id = rs.getInt("ID");
+                Conexion.setUserID(id);
+                pst.close();
+                rs.close();
                 
-                while(rs.next()){
-                    int id = rs.getInt("ID");
-                    Conexion.setUserID(id);
-                }
-
+                VentanaOpcionesUsuario VOU = new VentanaOpcionesUsuario();
+                VOU.setVisible(true);
+                VOU.setTitle("Ventana Opciones");
+                CloseFrame();
+                
+            }
+            else if (rs.isBeforeFirst() && "Admin".equals(rs.getString("Nivel"))) {
+                int id = rs.getInt("ID");
+                Conexion.setUserID(id);
                 pst.close();
                 rs.close();
                 
@@ -231,10 +250,11 @@ public class WindowLogin extends javax.swing.JFrame {
                 VO.setTitle("Ventana Opciones");
                 CloseFrame();
                 
-            } else {
-                JOptionPane.showMessageDialog(null, "Dato equivocado");
+            } 
+            else {
                 pst.close();
                 rs.close();
+                JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrecto.");
             }
         } catch (SQLException | HeadlessException e) {
             System.out.println("checkIfUserPassExist " + e.getMessage());
